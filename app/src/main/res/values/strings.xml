@@ -1,6 +1,10 @@
 <resources>
-    <string name="app_name">RNHLocator</string>
+    <string name="app_name">RNH Locator</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="welcometext">Welcome to RNHLocator</string>
+    <string name="btntext">Home</string>
+    <string name="hometext">Welcome to Home</string>
 </resources>
