@@ -8,4 +8,5 @@
     <string name="btntext">Home</string>
     <string name="hometext">Welcome to Home</string>
     <string name="title_activity_view_locations">ViewLocationsActivity</string>
+    <string name="title_activity_add_locations">AddLocationsActivity</string>
 </resources>

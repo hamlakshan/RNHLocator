@@ -24,6 +24,10 @@
             android:name=".ViewLocationsActivity"
             android:label="@string/title_activity_view_locations" >
         </activity>
+        <activity
+            android:name=".AddLocationsActivity"
+            android:label="@string/title_activity_add_locations" >
+        </activity>
     </application>
 
 </manifest>
