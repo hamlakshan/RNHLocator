@@ -1,33 +1,42 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/welcometext"
-        android:id="@+id/firsttext"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="87dp"
-        android:textColor="#ff100d0d"
-        android:textSize="31dp" />
+        android:text="Entery your name to log in"
+        android:id="@+id/textView"
+        android:textSize="30dp"
+        android:layout_gravity="center_horizontal"/>
 
-    <Button
-        android:layout_width="wrap_content"
+    <TextView android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/btntext"
-        android:id="@+id/homebtn"
-        android:background="#4112050c"
-        android:textColor="#f80d0a0c"
-        android:textSize="40dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="55dp"
-        android:onClick="onClick"/>
+        android:text="Name: "
+        android:textSize="20dp"/>
+    <EditText android:id="@+id/name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Email: "
+        android:textSize="20dp"
+        />
+    <EditText android:id="@+id/email"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"/>
+    <Button android:id="@+id/btnNextScreen"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:text="Send to Next Screen"
+        android:layout_marginTop="15dip"
+        android:layout_gravity="center_horizontal"/>
 
-</RelativeLayout>
+</LinearLayout>
