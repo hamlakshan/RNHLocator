@@ -1,0 +1,59 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dip"
+        android:gravity="center"
+        android:text="Logged in as:"
+        android:textSize="25dip" />
+
+
+    <TextView
+        android:id="@+id/userName"
+        android:layout_width="317dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dip"
+        android:textSize="18dip" />
+
+    <Button
+        android:id="@+id/btnview"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="View Datbase" />
+
+    <Button
+        android:id="@+id/btnadd"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Add New Location" />
+
+    <Button
+        android:id="@+id/btnupdate"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Update Location" />
+
+    <Button
+        android:id="@+id/btndelete"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Delete Location" />
+
+    <Button
+        android:id="@+id/btnexit"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Exit" />
+
+
+</LinearLayout>
