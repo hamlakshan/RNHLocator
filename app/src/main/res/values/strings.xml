@@ -12,4 +12,6 @@
     <string name="title_activity_view_in_map">ViewInMapActivity</string>
     <string name="title_activity_maps">Map</string>
     <string name="gpsEnableMsg">GPS is not enabled do you want to go to settings menu to enable GPS</string>
+    <string name="title_activity_login_window">LoginWindowActivity</string>
+    <string name="title_activity_quick_search">QuickSearch</string>
 </resources>
