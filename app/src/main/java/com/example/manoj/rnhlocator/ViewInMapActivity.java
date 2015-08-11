@@ -60,7 +60,7 @@ public class ViewInMapActivity extends Activity {
             googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
             googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
             googleMap.setMyLocationEnabled(true); // false to disable  shows my current location on the map
-            googleMap.animateCamera(CameraUpdateFactory.zoomTo(12.0f)); //change the zoom level
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 14.0f)); //change the zoom level
             placeMarker(religion);  //place marker on the location
             // check if map is created successfully or not
             if (googleMap == null) {
@@ -94,7 +94,7 @@ public class ViewInMapActivity extends Activity {
 
         // Changing marker icon
         if (religion == "Buddhist") {
-            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.temple));
+            marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
         }
         if (religion == "Catholic") {
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.church));
@@ -109,6 +109,7 @@ public class ViewInMapActivity extends Activity {
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
         }
 // adding marker
+        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
         googleMap.addMarker(marker);
     }
 }

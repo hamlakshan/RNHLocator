@@ -42,7 +42,22 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dip"
-        android:text="Login" />
+        android:text="Sign In" />
+    <Button
+        android:id="@+id/btnCloudLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dip"
+        android:text="Sing Up" />
+    <Button
+        android:id="@+id/btnToSandalondeApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dip"
+        android:text="Use offline database" />
+
 
 
 </LinearLayout>

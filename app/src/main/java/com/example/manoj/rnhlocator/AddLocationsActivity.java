@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -23,6 +24,7 @@ public class AddLocationsActivity extends Activity {
     Button addnew;
     Button getCordinate;
     Button markOnmap;
+    Button exit;
 
     EditText name;
     EditText description;
@@ -46,7 +48,7 @@ public class AddLocationsActivity extends Activity {
         addnew = (Button) findViewById(R.id.btnadd);        //this button is used to add the new location
         getCordinate = (Button) findViewById(R.id.btnGetLocation);  //this button id used to add the location codrinates ising GPS tracker
         markOnmap = (Button) findViewById(R.id.gotomap);    //this button is used to add the location codinates using by touching the map
-
+        exit=(Button)findViewById(R.id.btnexit);
         name = (EditText) findViewById(R.id.name);
         description = (EditText) findViewById(R.id.descriptionTxt);
         latitude = (EditText) findViewById(R.id.latitude);
@@ -104,7 +106,13 @@ public class AddLocationsActivity extends Activity {
                     e.printStackTrace();
                 }
 
-
+            }
+        });
+    //when exit button is pressed the current window will be closed
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 
@@ -153,6 +161,8 @@ public class AddLocationsActivity extends Activity {
         if (googleMap == null) {
             googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
             // check if map is created successfully or not
+            googleMap.setMyLocationEnabled(true); // false to disable  shows my current location on the map
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(6.7903917f, 79.9005859f), 14.0f));
 
 
             if (googleMap == null) {

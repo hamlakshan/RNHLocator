@@ -28,6 +28,8 @@ public class QuickSearch extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quick_search_map);
 
+        db = new DatabaseHandler(this); //db handler class
+
         try {
             // Loading map
             initilizeMap();
@@ -43,14 +45,12 @@ public class QuickSearch extends Activity {
             googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
             googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
             googleMap.setMyLocationEnabled(true); // false to disable  shows my current location on the map
-            googleMap.animateCamera(CameraUpdateFactory.zoomTo(12.0f)); //change the zoom level
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(6.7903917f, 79.9005859f), 14.0f)); //innitial zoom level
 
             markPlaces();
             // check if map is created successfully or not
             if (googleMap == null) {
-                Toast.makeText(getApplicationContext(),
-                        "Sorry! unable to create maps", Toast.LENGTH_SHORT)
-                        .show();
+                Toast.makeText(getApplicationContext(), "Sorry! unable to create maps", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -79,6 +79,7 @@ public class QuickSearch extends Activity {
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
         }
 // adding marker
+        marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         googleMap.addMarker(marker);
     }
 
@@ -93,7 +94,6 @@ public class QuickSearch extends Activity {
             longitude = Double.parseDouble(ln.getLongitude());
 
             placeMarker();  //add the place marker each separate place
-
 
             // adding the location to the map
 

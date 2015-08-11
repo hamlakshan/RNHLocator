@@ -61,6 +61,10 @@
             android:name=".QuickSearch"
             android:label="@string/title_activity_quick_search" >
         </activity>
+        <activity
+            android:name=".CloudDatabaseActivity"
+            android:label="@string/title_activity_cloud_database" >
+        </activity>
     </application>
 
 </manifest>

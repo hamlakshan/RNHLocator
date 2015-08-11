@@ -14,4 +14,5 @@
     <string name="gpsEnableMsg">GPS is not enabled do you want to go to settings menu to enable GPS</string>
     <string name="title_activity_login_window">LoginWindowActivity</string>
     <string name="title_activity_quick_search">QuickSearch</string>
+    <string name="title_activity_cloud_database">CloudDatabaseActivity</string>
 </resources>
