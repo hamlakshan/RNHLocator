@@ -65,6 +65,14 @@
             android:name=".CloudDatabaseActivity"
             android:label="@string/title_activity_cloud_database" >
         </activity>
+        <activity
+            android:name=".ViewCloudLocationsActivity"
+            android:label="@string/title_activity_view_cloud_locations" >
+        </activity>
+        <activity
+            android:name=".AddCloudLocationActivity"
+            android:label="@string/title_activity_add_cloud_location" >
+        </activity>
     </application>
 
 </manifest>
