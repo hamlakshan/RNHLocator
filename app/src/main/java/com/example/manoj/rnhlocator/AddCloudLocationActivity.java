@@ -33,6 +33,8 @@ public class AddCloudLocationActivity extends Activity {
     // Progress Dialog
     private ProgressDialog pDialog;
 
+    private static final String TAG_LOG = "myview";
+
     JSONParser jsonParser = new JSONParser();
 
     Spinner dropDown;
@@ -63,6 +65,7 @@ public class AddCloudLocationActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_locations);
         addSpinner();
+        Log.d(TAG_LOG, "on create finished");
 
         // Edit Text
         inputName = (EditText) findViewById(R.id.name);
@@ -81,8 +84,9 @@ public class AddCloudLocationActivity extends Activity {
 
             @Override
             public void onClick(View view) {
-                // creating new product in background thread
-                new CreateNewProduct().execute();
+                // creating new location in background thread
+                Log.d(TAG_LOG, "add button pressed");
+                new CreateNewLocation().execute();
             }
         });
 
@@ -195,13 +199,14 @@ public class AddCloudLocationActivity extends Activity {
     /**
      * Background Async Task to Create new product
      */
-    class CreateNewProduct extends AsyncTask<String, String, String> {
+    class CreateNewLocation extends AsyncTask<String, String, String> {
 
         /**
          * Before starting background thread Show Progress Dialog
          */
         @Override
         protected void onPreExecute() {
+            Log.d(TAG_LOG, "pre execute");
             super.onPreExecute();
             pDialog = new ProgressDialog(AddCloudLocationActivity.this);
             pDialog.setMessage("Creating Product..");
@@ -234,7 +239,7 @@ public class AddCloudLocationActivity extends Activity {
             JSONObject json = jsonParser.makeHttpRequest(url_create_location, "POST", params);
 
             // check log cat fro response
-            Log.d("Create Response", json.toString());
+            Log.d(TAG_LOG, json.toString());
 
             // check for success tag
             try {

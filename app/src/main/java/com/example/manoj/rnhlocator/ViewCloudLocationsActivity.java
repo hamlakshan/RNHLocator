@@ -45,14 +45,17 @@ public class ViewCloudLocationsActivity extends ListActivity {
     private static final String TAG_LATITUDES = "latitudes";
     private static final String TAG_LONGITUDES = "longitudes";
 
+    private static final String TAG_LOG = "myview";
+
     // products JSONArray
     JSONArray location = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG_LOG, "created");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.locaion_listview);
-
+        setContentView(R.layout.list_view);
+        Log.d(TAG_LOG, "created");
         // Hashmap for ListView
         locationList = new ArrayList<HashMap<String, String>>();
 
@@ -73,17 +76,17 @@ public class ViewCloudLocationsActivity extends ListActivity {
                 String lid = ((TextView) view.findViewById(R.id.lid)).getText().toString();
                 String name = ((TextView) view.findViewById(R.id.name)).getText().toString();
                 String religion = ((TextView) view.findViewById(R.id.religion)).getText().toString();
-               // String description = ((TextView) view.findViewById(R.id.description)).getText().toString();
-             //   String latitude = ((TextView) view.findViewById(R.id.latitude)).getText().toString();
-             //   String longitude = ((TextView) view.findViewById(R.id.longitude)).getText().toString();
+                // String description = ((TextView) view.findViewById(R.id.description)).getText().toString();
+                //   String latitude = ((TextView) view.findViewById(R.id.latitude)).getText().toString();
+                //   String longitude = ((TextView) view.findViewById(R.id.longitude)).getText().toString();
 
                 // Starting new intent
-             //   Intent in = new Intent(getApplicationContext(), EditProductActivity.class);
+                //   Intent in = new Intent(getApplicationContext(), EditProductActivity.class);
                 // sending pid to next activity
-             //   in.putExtra(TAG_LID, lid);
+                //   in.putExtra(TAG_LID, lid);
 
                 // starting new activity and expecting some response back
-              //  startActivityForResult(in, 100);
+                //  startActivityForResult(in, 100);
             }
         });
 
@@ -200,8 +203,10 @@ public class ViewCloudLocationsActivity extends ListActivity {
                      * Updating parsed JSON data into ListView
                      * */
                     ListAdapter adapter = new SimpleAdapter(
-                            ViewCloudLocationsActivity.this, locationList, R.layout.locaion_list_item, new String[]{TAG_LID,
-                            TAG_NAME,TAG_RELIGION}, new int[]{R.id.lid, R.id.name,R.id.religion});
+                            ViewCloudLocationsActivity.this, locationList,
+                            R.layout.cloud_locations_list_item, new String[]{TAG_LID,
+                            TAG_NAME, TAG_RELIGION, TAG_DESCRIPTION, TAG_LATITUDES, TAG_LONGITUDES},
+                            new int[]{R.id.lid, R.id.name, R.id.religion, R.id.description, R.id.latitude, R.id.longitude});
                     // updating listview
                     setListAdapter(adapter);
                 }
