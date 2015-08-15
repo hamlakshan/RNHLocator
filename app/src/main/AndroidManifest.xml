@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.manoj.rnhlocator">
+    package="com.example.manoj.rnhlocator" >
 
     <permission
         android:name="info.androidhive.googlemapsv2.permission.MAPS_RECEIVE"
@@ -25,10 +25,10 @@
         android:allowBackup="true"
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,26 +47,30 @@
         <activity
             android:name=".ViewInMapActivity"
             android:label="@string/title_activity_view_in_map" />
-
         <activity
             android:name=".LoginWindowActivity"
-            android:label="@string/title_activity_login_window"></activity>
+            android:label="@string/title_activity_login_window" />
         <activity
             android:name=".QuickSearch"
-            android:label="@string/title_activity_quick_search"></activity>
+            android:label="@string/title_activity_quick_search" />
         <activity
             android:name=".CloudDatabaseActivity"
-            android:label="@string/title_activity_cloud_database"></activity>
+            android:label="@string/title_activity_cloud_database" />
         <activity
             android:name=".ViewCloudLocationsActivity"
-            android:label="@string/title_activity_view_cloud_locations"></activity>
+            android:label="@string/title_activity_view_cloud_locations" />
         <activity
             android:name=".AddCloudLocationActivity"
-            android:label="@string/title_activity_add_cloud_location"></activity>
+            android:label="@string/title_activity_add_cloud_location" />
         <!-- Goolge API Key -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBlBZCiw32YHWbk2sxJLD-55A9tNqU6CFM" />
+
+        <activity
+            android:name=".CloudSignUpActivity"
+            android:label="@string/title_activity_cloud_sign_up" >
+        </activity>
     </application>
 
 </manifest>

@@ -17,4 +17,5 @@
     <string name="title_activity_cloud_database">CloudDatabaseActivity</string>
     <string name="title_activity_view_cloud_locations">ViewCloudLocationsActivity</string>
     <string name="title_activity_add_cloud_location">AddCloudLocationActivity</string>
+    <string name="title_activity_cloud_sign_up">CloudSignUpActivity</string>
 </resources>
