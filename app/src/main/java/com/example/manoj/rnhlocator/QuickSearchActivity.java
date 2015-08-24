@@ -14,7 +14,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.List;
 
 
-public class QuickSearch extends Activity {
+public class QuickSearchActivity extends Activity {
     /*this activity locads the quick shrarch window which will show all the avialable places in the datadase
     * which are in 10KM readius to  the current location*/
 
@@ -89,7 +89,7 @@ public class QuickSearch extends Activity {
 
             id = Integer.toString(ln.getId());
             name = ln.getName();
-            religion = ln.getReligion();
+            religion = ln.getCategory();
             latitude = Double.parseDouble(ln.getLatitude());
             longitude = Double.parseDouble(ln.getLongitude());
 

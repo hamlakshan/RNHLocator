@@ -8,29 +8,33 @@ public class Location {
     //private variables or the attributes of the talbe
     int id;
     String name;
-    String religion;
+    String category;
+    String description;
     String latitude;
     String longitude;
 
     // Empty constructor
-    public Location(){
+    public Location() {
 
     }
+
     // constructor
-    public Location(int id, String name,String religion,String latitude,String longitude){
+    public Location(int id, String name, String category, String description, String latitude, String longitude) {
         this.id = id;
         this.name = name;
-        this.religion=religion;
-        this.latitude=latitude;
-        this.longitude=longitude;
+        this.category = category;
+        this.description = description;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     // constructor to auto incremnet the id
-    public Location(String name,String religion,String latitude,String longitude){
+    public Location(String name, String category, String description, String latitude, String longitude) {
         this.name = name;
-        this.religion=religion;
-        this.latitude=latitude;
-        this.longitude=longitude;
+        this.category = category;
+        this.description = description;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public int getId() {
@@ -41,8 +45,12 @@ public class Location {
         return name;
     }
 
-    public String getReligion() {
-        return religion;
+    public String getCategory() {
+        return category;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public String getLatitude() {
@@ -61,8 +69,12 @@ public class Location {
         this.name = name;
     }
 
-    public void setReligion(String religion) {
-        this.religion = religion;
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setLatitude(String latitude) {

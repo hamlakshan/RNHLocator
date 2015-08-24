@@ -14,6 +14,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,6 +33,8 @@ public class ViewCloudLocationsActivity extends ListActivity {
 
     ArrayList<HashMap<String, String>> locationList;
 
+    String user_id;
+
     // url to get all locations list from cloud database
     private static String url_all_locations = "http://www.rnhlocator.site88.net/view_location.php";
 
@@ -40,10 +43,12 @@ public class ViewCloudLocationsActivity extends ListActivity {
     private static final String TAG_LOCATIONS = "location";
     private static final String TAG_LID = "lid";
     private static final String TAG_NAME = "name";
-    private static final String TAG_RELIGION = "religion";
+    private static final String TAG_CATEGORY = "category";
     private static final String TAG_DESCRIPTION = "description";
+    private static final String TAG_USER = "user_id";
     private static final String TAG_LATITUDES = "latitudes";
     private static final String TAG_LONGITUDES = "longitudes";
+
 
     private static final String TAG_LOG = "myview";
 
@@ -52,10 +57,16 @@ public class ViewCloudLocationsActivity extends ListActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG_LOG, "created");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_view);
-        Log.d(TAG_LOG, "created");
+
+        //the intent to obtain the data recerivd from the previous window
+        Intent main = getIntent();
+        //String name = main.getStringExtra("name");
+        user_id = main.getStringExtra("id");
+        Log.d(TAG_LOG, "user id: " + user_id);
+
         // Hashmap for ListView
         locationList = new ArrayList<HashMap<String, String>>();
 
@@ -74,37 +85,21 @@ public class ViewCloudLocationsActivity extends ListActivity {
                                     int position, long id) {
                 // getting values from selected ListItem
                 String lid = ((TextView) view.findViewById(R.id.lid)).getText().toString();
-                String name = ((TextView) view.findViewById(R.id.name)).getText().toString();
-                String religion = ((TextView) view.findViewById(R.id.religion)).getText().toString();
+                //String name = ((TextView) view.findViewById(R.id.name)).getText().toString();
+                // religion = ((TextView) view.findViewById(R.id.category)).getText().toString();
                 // String description = ((TextView) view.findViewById(R.id.description)).getText().toString();
                 //   String latitude = ((TextView) view.findViewById(R.id.latitude)).getText().toString();
                 //   String longitude = ((TextView) view.findViewById(R.id.longitude)).getText().toString();
 
                 // Starting new intent
-                //   Intent in = new Intent(getApplicationContext(), EditProductActivity.class);
+                Intent viewinmap = new Intent(getApplicationContext(), ViewCloudInMapActivity.class);
                 // sending pid to next activity
-                //   in.putExtra(TAG_LID, lid);
-
+                viewinmap.putExtra("id", lid);
+                Log.d(TAG_LOG, "sent location_id is: " + lid);
                 // starting new activity and expecting some response back
-                //  startActivityForResult(in, 100);
+                startActivity(viewinmap);
             }
         });
-
-    }
-
-    // Response from Edit Product Activity
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // if result code 100
-        if (resultCode == 100) {
-            // if result code 100 is received
-            // means user edited/deleted product
-            // reload this screen again
-            Intent intent = getIntent();
-            finish();
-            startActivity(intent);
-        }
 
     }
 
@@ -133,11 +128,13 @@ public class ViewCloudLocationsActivity extends ListActivity {
         protected String doInBackground(String... args) {
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("user_id", user_id));
+
             // getting JSON string from URL
-            JSONObject json = jParser.makeHttpRequest(url_all_locations, "GET", params);
+            JSONObject json = jParser.makeHttpRequest(url_all_locations, "POST", params);
 
             // Check your log cat for JSON reponse
-            Log.d("All locations: ", json.toString());
+            Log.d(TAG_LOG, json.toString());
 
             try {
                 // Checking for SUCCESS TAG
@@ -148,14 +145,15 @@ public class ViewCloudLocationsActivity extends ListActivity {
                     // Getting Array of Products
                     location = json.getJSONArray(TAG_LOCATIONS);
 
-                    // looping through All Products
+                    //looping through All Products
                     for (int i = 0; i < location.length(); i++) {
+
                         JSONObject c = location.getJSONObject(i);
 
                         // Storing each json item in variable
                         String id = c.getString(TAG_LID);
                         String name = c.getString(TAG_NAME);
-                        String religion = c.getString(TAG_RELIGION);
+                        String category = c.getString(TAG_CATEGORY);
                         String description = c.getString(TAG_DESCRIPTION);
                         String latitude = c.getString(TAG_LATITUDES);
                         String longitude = c.getString(TAG_LONGITUDES);
@@ -166,26 +164,26 @@ public class ViewCloudLocationsActivity extends ListActivity {
                         // adding each child node to HashMap key => value
                         map.put(TAG_LID, id);
                         map.put(TAG_NAME, name);
-                        map.put(TAG_RELIGION, religion);
+                        map.put(TAG_CATEGORY, category);
                         map.put(TAG_DESCRIPTION, description);
                         map.put(TAG_LATITUDES, latitude);
                         map.put(TAG_LONGITUDES, longitude);
-
                         // adding HashList to ArrayList
                         locationList.add(map);
                     }
                 } else {
                     // no products found
                     // Launch Add New product Activity
+                    Log.d(TAG_LOG, "no result found");
                     Intent i = new Intent(getApplicationContext(), AddCloudLocationActivity.class);
                     // Closing all previous activities
+                    i.putExtra("id", user_id);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
             return null;
         }
 
@@ -205,13 +203,12 @@ public class ViewCloudLocationsActivity extends ListActivity {
                     ListAdapter adapter = new SimpleAdapter(
                             ViewCloudLocationsActivity.this, locationList,
                             R.layout.cloud_locations_list_item, new String[]{TAG_LID,
-                            TAG_NAME, TAG_RELIGION, TAG_DESCRIPTION, TAG_LATITUDES, TAG_LONGITUDES},
-                            new int[]{R.id.lid, R.id.name, R.id.religion, R.id.description, R.id.latitude, R.id.longitude});
+                            TAG_NAME, TAG_CATEGORY},
+                            new int[]{R.id.lid, R.id.name, R.id.category});
                     // updating listview
                     setListAdapter(adapter);
                 }
             });
-
         }
 
     }

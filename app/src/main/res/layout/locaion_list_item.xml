@@ -2,39 +2,64 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
 
-    <!-- id label -->
-    <TextView
-        android:id="@+id/lid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:text="ID: "
-        android:textColor="#5d5d5d"
-        android:textStyle="bold" />
 
-    <!-- Name Label -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_weight="0.06">
+        <!-- id label -->
+        <TextView
+            android:id="@+id/lid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/name"
+            android:layout_alignParentTop="true"
+            android:gravity="left"
+            android:paddingBottom="2dip"
+            android:paddingTop="6dip"
+            android:text="ID: "
+            android:textColor="#5d5d5d"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="2dip"
-        android:paddingTop="6dip"
-        android:text="Name:"
-        android:textColor="#43bd00"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        <!-- Name Label -->
 
-    <!-- Mobile number label -->
-    <TextView
-        android:id="@+id/religion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:text="Religion: "
-        android:textColor="#5d5d5d"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="2dip"
+            android:paddingTop="6dip"
+            android:text="Name:"
+            android:textColor="#43bd00"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/lid"
+            android:layout_toEndOf="@+id/lid"
+            android:layout_marginLeft="19dp"
+            android:layout_marginStart="19dp" />
+
+        <TextView
+            android:id="@+id/loc_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="2dip"
+            android:paddingTop="6dip"
+            android:text="Category"
+            android:textColor="#ff0000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_below="@+id/lid"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+
+    </RelativeLayout>
+
+    <!-- category label -->
 
 </LinearLayout>

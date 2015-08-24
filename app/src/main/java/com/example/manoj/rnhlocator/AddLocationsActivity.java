@@ -33,8 +33,6 @@ public class AddLocationsActivity extends Activity {
 
     DatabaseHandler db;
     private GoogleMap googleMap;
-    double latitudes, longitudes;
-
 
     GPSTracker gps;
 
@@ -48,7 +46,8 @@ public class AddLocationsActivity extends Activity {
         addnew = (Button) findViewById(R.id.btnadd);        //this button is used to add the new location
         getCordinate = (Button) findViewById(R.id.btnGetLocation);  //this button id used to add the location codrinates ising GPS tracker
         markOnmap = (Button) findViewById(R.id.gotomap);    //this button is used to add the location codinates using by touching the map
-        exit=(Button)findViewById(R.id.btnexit);
+        exit = (Button) findViewById(R.id.btnexit);
+
         name = (EditText) findViewById(R.id.name);
         description = (EditText) findViewById(R.id.descriptionTxt);
         latitude = (EditText) findViewById(R.id.latitude);
@@ -59,7 +58,7 @@ public class AddLocationsActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                if (name.getText() != null && latitude.getText()!=null && longitude.getText()!=null) {
+                if (name.getText() != null && latitude.getText() != null && longitude.getText() != null) {
                     addData();  //call the methd to add data to the database
                 }
             }
@@ -108,7 +107,7 @@ public class AddLocationsActivity extends Activity {
 
             }
         });
-    //when exit button is pressed the current window will be closed
+        //when exit button is pressed the current window will be closed
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,8 +125,8 @@ public class AddLocationsActivity extends Activity {
         String religion = dropDown.getSelectedItem().toString();
 
         //add new data touple it to the data base as a Location object
-        db.addLocation(new Location(name.getText().toString(), religion, latitude.getText().toString(), longitude.getText().toString()));
-       // showAlert();
+        db.addLocation(new Location(name.getText().toString(), religion, description.getText().toString(), latitude.getText().toString(), longitude.getText().toString()));
+        // showAlert();
     }
 
 
@@ -185,7 +184,7 @@ public class AddLocationsActivity extends Activity {
     }
 
     //this method is used to alert the user before entering the data to the database
-    public void showAlert(){
+    public void showAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getApplicationContext());
 
         // Setting Dialog Title
@@ -199,7 +198,7 @@ public class AddLocationsActivity extends Activity {
 
         // On pressing Settings button
         alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int which) {
+            public void onClick(DialogInterface dialog, int which) {
             }
         });
 

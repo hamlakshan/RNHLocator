@@ -44,6 +44,8 @@ public class AddCloudLocationActivity extends Activity {
     Button exit;
     Button btnAddLocation;
 
+    String user_id;
+
     EditText inputName;
     EditText inputDesc;
     EditText inputLatitude;
@@ -66,6 +68,11 @@ public class AddCloudLocationActivity extends Activity {
         setContentView(R.layout.activity_add_locations);
         addSpinner();
         Log.d(TAG_LOG, "on create finished");
+
+        //the intent to obtain the data recerivd from the previous window
+        Intent main = getIntent();
+        //String name = main.getStringExtra("name");
+        user_id = main.getStringExtra("id");
 
         // Edit Text
         inputName = (EditText) findViewById(R.id.name);
@@ -209,7 +216,7 @@ public class AddCloudLocationActivity extends Activity {
             Log.d(TAG_LOG, "pre execute");
             super.onPreExecute();
             pDialog = new ProgressDialog(AddCloudLocationActivity.this);
-            pDialog.setMessage("Creating Product..");
+            pDialog.setMessage("Adding New Location..");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();
@@ -221,7 +228,7 @@ public class AddCloudLocationActivity extends Activity {
         protected String doInBackground(String... args) {
 
             String name = inputName.getText().toString();
-            String religion = dropDown.getSelectedItem().toString();
+            String category = dropDown.getSelectedItem().toString();
             String description = inputDesc.getText().toString();
             String latitude = inputLatitude.getText().toString();
             String longitude = inputLongitude.getText().toString();
@@ -229,8 +236,9 @@ public class AddCloudLocationActivity extends Activity {
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("name", name));
-            params.add(new BasicNameValuePair("religion", religion));
+            params.add(new BasicNameValuePair("category", category));
             params.add(new BasicNameValuePair("description", description));
+            params.add(new BasicNameValuePair("user_id", user_id));
             params.add(new BasicNameValuePair("latitude", latitude));
             params.add(new BasicNameValuePair("longitude", longitude));
 
@@ -247,7 +255,8 @@ public class AddCloudLocationActivity extends Activity {
 
                 if (success == 1) {
                     // successfully created product
-                    Intent i = new Intent(getApplicationContext(), ViewCloudLocationsActivity.class);
+                    Intent i = new Intent(getApplicationContext(),CloudDatabaseActivity.class);
+                    i.putExtra("id",user_id);
                     startActivity(i);
 
                     // closing this screen

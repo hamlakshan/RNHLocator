@@ -20,7 +20,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
 
-
     // Database Name
     private static final String DATABASE_NAME = "rnhLocator.db";
 
@@ -30,9 +29,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Contacts Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
-    private static final String KEY_RELIGION = "religion";
-    private static final String KEY_LATITUDE="latitude";
-    private static final String KEY_LONGITUDE="longitude";
+    private static final String KEY_CATEGORY = "category";
+    private static final String KEY_DESCRIPTION = "description";
+    private static final String KEY_LATITUDE = "latitude";
+    private static final String KEY_LONGITUDE = "longitude";
 
     public DatabaseHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -45,9 +45,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         String CREATE_LOCATION_TABLE = "CREATE TABLE " + TABLE_LOCATIONS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
-                + KEY_RELIGION + " TEXT," +KEY_LATITUDE + " TEXT," +KEY_LONGITUDE + " TEXT" + ");";
+                + KEY_CATEGORY + " TEXT," + KEY_DESCRIPTION + " TEXT," + KEY_LATITUDE + " TEXT," + KEY_LONGITUDE + " TEXT" + ");";
         db.execSQL(CREATE_LOCATION_TABLE);
     }
 
@@ -62,7 +63,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-
     // Adding new touple or location data to the database
     void addLocation(Location location) {
 
@@ -70,12 +70,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, location.getName()); // assign location name
-        values.put(KEY_RELIGION, location.getReligion()); // religion
-        values.put(KEY_LATITUDE,location.getLatitude());
-        values.put(KEY_LONGITUDE,location.getLongitude());
+        values.put(KEY_CATEGORY, location.getCategory()); // religion
+        values.put(KEY_DESCRIPTION, location.getDescription()); // description
+        values.put(KEY_LATITUDE, location.getLatitude());
+        values.put(KEY_LONGITUDE, location.getLongitude());
 
         // Inserting Row
-        db.insert(TABLE_LOCATIONS,null,values);
+        db.insert(TABLE_LOCATIONS, null, values);
         db.close(); // Closing database connection
     }
 
@@ -84,13 +85,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_LOCATIONS, new String[] { KEY_ID,
-                        KEY_NAME, KEY_RELIGION, KEY_LATITUDE, KEY_LONGITUDE }, KEY_ID + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
+        Cursor cursor = db.query(TABLE_LOCATIONS, new String[]{KEY_ID,
+                        KEY_NAME, KEY_CATEGORY, KEY_DESCRIPTION, KEY_LATITUDE, KEY_LONGITUDE}, KEY_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
-        Location location = new Location(Integer.parseInt(cursor.getString(0)),cursor.getString(1), cursor.getString(2),cursor.getString(3),cursor.getString(4));
+        Location location = new Location(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
         // return contact
         return location;
     }
@@ -110,9 +111,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 Location location = new Location();
                 location.setId(Integer.parseInt(cursor.getString(0)));
                 location.setName(cursor.getString(1));
-                location.setReligion(cursor.getString(2));
-                location.setLatitude(cursor.getString(3));
-                location.setLongitude(cursor.getString(4));
+                location.setCategory(cursor.getString(2));
+                location.setDescription(cursor.getString(3));
+                location.setLatitude(cursor.getString(4));
+                location.setLongitude(cursor.getString(5));
                 // Adding contact to list
                 locationList.add(location);
             } while (cursor.moveToNext());
@@ -128,19 +130,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, location.getName());
-        values.put(KEY_RELIGION, location.getReligion()); // religion
-        values.put(KEY_LATITUDE,location.getLatitude());
-        values.put(KEY_LONGITUDE,location.getLongitude());
+        values.put(KEY_CATEGORY, location.getCategory()); // religion
+        values.put(KEY_DESCRIPTION, location.getDescription());
+        values.put(KEY_LATITUDE, location.getLatitude());
+        values.put(KEY_LONGITUDE, location.getLongitude());
 
         // updating row
         return db.update(TABLE_LOCATIONS, values, KEY_ID + " = ?",
-                new String[] { String.valueOf(location.getId()) });
+                new String[]{String.valueOf(location.getId())});
     }
 
     // Deleting single contact
     public void deleteLocation(Location location) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_LOCATIONS, KEY_ID + " = ?", new String[] { String.valueOf(location.getId()) });
+        db.delete(TABLE_LOCATIONS, KEY_ID + " = ?", new String[]{String.valueOf(location.getId())});
         db.close();
     }
 

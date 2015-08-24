@@ -45,6 +45,7 @@ public class LoginWindowActivity extends Activity {
     private static String url_authenticate = "http://www.rnhlocator.site88.net/validate_user.php";
 
     private static final String TAG_SUCCESS = "success";
+    private static final String TAG_ID = "user_id";
     private static final String TAG_LOG = "myview";
 
     @Override
@@ -158,12 +159,14 @@ public class LoginWindowActivity extends Activity {
             try {
                 // Checking for SUCCESS TAG
                 int success = json.getInt(TAG_SUCCESS);
+                String id=json.getString(TAG_ID);
 
                 if (success == 1) {
                     //if user name and password are correct the window cloud access will be opened
                     Intent cloudWindow = new Intent(getApplicationContext(), CloudDatabaseActivity.class);
+                    cloudWindow.putExtra("id",id);
                     startActivity(cloudWindow);
-                    finish();
+                   // finish();
 
                 } else {
                     Log.d(TAG_LOG, "error username or pwd");

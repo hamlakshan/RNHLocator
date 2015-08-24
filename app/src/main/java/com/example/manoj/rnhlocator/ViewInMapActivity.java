@@ -3,6 +3,8 @@ package com.example.manoj.rnhlocator;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,18 +19,31 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class ViewInMapActivity extends Activity {
 
     private GoogleMap googleMap;
+
     double latitude, longitude;
-    String name, religion, description;
+    String name, category, description;
+
     Location location;
     DatabaseHandler db;
+
     TextView nameText;
-    TextView religionText;
+    TextView categoryText;
+    TextView descriptionText;
+
+    Button update;
+    Button delete;
+
+    String location_id;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_map);
+
+        update = (Button) findViewById(R.id.btnupdate);
+        delete = (Button) findViewById(R.id.btndelete);
 
         db = new DatabaseHandler(this); //db handler class
 
@@ -36,14 +51,15 @@ public class ViewInMapActivity extends Activity {
         Intent main = getIntent();
 
         //String name = main.getStringExtra("name");
-        String id = main.getStringExtra("id");
-        TextView lid;
+        location_id = main.getStringExtra("id");
+
         nameText = (TextView) findViewById(R.id.locationName);
-        religionText = (TextView) findViewById(R.id.locationType);
+        categoryText = (TextView) findViewById(R.id.locationType);
+        descriptionText = (TextView) findViewById(R.id.locationdescription);
 
         //String religion = main.getStringExtra("religion");
 
-        getPlaceDetails(Integer.parseInt(id) + 1);    //get all the details of the paces represented by id
+        getPlaceDetails(Integer.parseInt(location_id)+1);    //get all the details of the paces represented by id
 
         try {
             // Loading map
@@ -53,6 +69,31 @@ public class ViewInMapActivity extends Activity {
             e.printStackTrace();
         }
 
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//the location loaded will be deleted from the databse
+                db.deleteLocation(location);
+
+            }
+        });
+
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent updateWindow = new Intent(getApplicationContext(), UpdateLocationActivity.class);
+                updateWindow.putExtra("location_id", location_id);
+                updateWindow.putExtra("name", name);
+                updateWindow.putExtra("description", description);
+                updateWindow.putExtra("lat", latitude);
+                updateWindow.putExtra("lon", longitude);
+                startActivity(updateWindow);
+                finish();
+
+            }
+        });
+
+
     }
 
     public void initilizeMap() {
@@ -61,7 +102,7 @@ public class ViewInMapActivity extends Activity {
             googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
             googleMap.setMyLocationEnabled(true); // false to disable  shows my current location on the map
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 14.0f)); //change the zoom level
-            placeMarker(religion);  //place marker on the location
+            placeMarker(category);  //place marker on the location
             // check if map is created successfully or not
             if (googleMap == null) {
                 Toast.makeText(getApplicationContext(),
@@ -77,35 +118,37 @@ public class ViewInMapActivity extends Activity {
         location = db.getLocationByID(id);
         latitude = Double.parseDouble(location.latitude);
         longitude = Double.parseDouble(location.longitude);
-        name = location.name;
-        religion = location.religion;
+        name = location.getName();
+        category = location.getCategory();
+        description = location.getDescription();
 
         //set values for the text views.
         nameText.setText(name);
-        religionText.setText(religion);
+        categoryText.setText(category);
+        descriptionText.setText(description);
         //description=
 
     }
 
-    public void placeMarker(String religion) {
+    public void placeMarker(String category) {
 
         // create marker
         MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title(name);
 
         // Changing marker icon
-        if (religion == "Buddhist") {
+        if (category == "Buddhist") {
             marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
         }
-        if (religion == "Catholic") {
+        if (category == "Catholic") {
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.church));
         }
-        if (religion == "Islam") {
+        if (category == "Islam") {
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.mosque));
         }
-        if (religion == "Hindu") {
+        if (category == "Hindu") {
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.kovil));
         }
-        if (religion == "Other") {
+        if (category == "Other") {
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
         }
 // adding marker

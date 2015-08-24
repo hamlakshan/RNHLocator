@@ -18,4 +18,6 @@
     <string name="title_activity_view_cloud_locations">ViewCloudLocationsActivity</string>
     <string name="title_activity_add_cloud_location">AddCloudLocationActivity</string>
     <string name="title_activity_cloud_sign_up">CloudSignUpActivity</string>
+    <string name="title_activity_update_location">UpdateLocationActivity</string>
+    <string name="title_activity_view_cloud_in_map">ViewCloudInMapActivity</string>
 </resources>

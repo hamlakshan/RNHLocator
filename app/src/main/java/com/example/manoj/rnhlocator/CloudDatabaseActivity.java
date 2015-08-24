@@ -13,12 +13,18 @@ public class CloudDatabaseActivity extends Activity {
     Button btnNewLocation;
 
     private static final String TAG_LOG = "myview";
+    String user_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cloud_database);
+        setContentView(R.layout.cloud_database_window);
 
+        //the intent to obtain the data recerivd from the previous window
+        Intent main = getIntent();
+        //String name = main.getStringExtra("name");
+        user_id = main.getStringExtra("id");
+        Log.d(TAG_LOG, "cloud database activity user id is : "+user_id);
         btnViewLocatios = (Button) findViewById(R.id.btnViewLocations);
         btnNewLocation = (Button) findViewById(R.id.btnCreateLocation);
 
@@ -29,9 +35,9 @@ public class CloudDatabaseActivity extends Activity {
             public void onClick(View view) {
                 // Launching All products Activity
                 Intent viewlocation = new Intent(getApplicationContext(), ViewCloudLocationsActivity.class);
+                viewlocation.putExtra("id",user_id);
                 startActivity(viewlocation);
-
-                Log.d(TAG_LOG, "after intent");
+                Log.d(TAG_LOG, "passed user id: "+user_id);
             }
         });
 
@@ -42,8 +48,9 @@ public class CloudDatabaseActivity extends Activity {
             public void onClick(View view) {
                 // Launching create new product activity
                 Intent addnew = new Intent(getApplicationContext(), AddCloudLocationActivity.class);
+                addnew.putExtra("id",user_id);
                 startActivity(addnew);
-                Log.d(TAG_LOG, "after intent");
+                Log.d(TAG_LOG, "new locatin adding window opened");
 
             }
         });

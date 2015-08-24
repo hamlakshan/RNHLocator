@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.view.View;
 import android.content.Intent;
-import android.widget.EditText;
 
 
 public class MainActivity extends Activity {
@@ -34,7 +33,7 @@ public class MainActivity extends Activity {
         quickSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent quickSearchWindow= new Intent(getApplicationContext(),QuickSearch.class);
+                Intent quickSearchWindow= new Intent(getApplicationContext(),QuickSearchActivity.class);
                 startActivity(quickSearchWindow);
             }
         });

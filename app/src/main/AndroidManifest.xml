@@ -51,7 +51,7 @@
             android:name=".LoginWindowActivity"
             android:label="@string/title_activity_login_window" />
         <activity
-            android:name=".QuickSearch"
+            android:name=".QuickSearchActivity"
             android:label="@string/title_activity_quick_search" />
         <activity
             android:name=".CloudDatabaseActivity"
@@ -70,6 +70,14 @@
         <activity
             android:name=".CloudSignUpActivity"
             android:label="@string/title_activity_cloud_sign_up" >
+        </activity>
+        <activity
+            android:name=".UpdateLocationActivity"
+            android:label="@string/title_activity_update_location" >
+        </activity>
+        <activity
+            android:name=".ViewCloudInMapActivity"
+            android:label="@string/title_activity_view_cloud_in_map" >
         </activity>
     </application>
 

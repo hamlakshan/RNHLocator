@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <TextView
         android:id="@+id/lid"
         android:layout_width="fill_parent"
@@ -22,38 +23,12 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/religion"
+        android:id="@+id/category"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="6dip"
         android:paddingTop="6dip"
-        android:textSize="17dip"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="6dip"
-        android:paddingTop="6dip"
-        android:textSize="17dip"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/latitude"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="6dip"
-        android:paddingTop="6dip"
-        android:textSize="17dip"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/longitude"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="6dip"
-        android:paddingTop="6dip"
+        android:textColor="#ff0000"
         android:textSize="17dip"
         android:textStyle="bold" />
 
