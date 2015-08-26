@@ -25,25 +25,26 @@ import java.util.List;
 
 public class LoginWindowActivity extends Activity {
 
+    //button definition
     Button authenticate;
     Button signup;
     Button toStandaloneApp;
-
+    //edit text field definition
     EditText username;
     EditText password;
-
+    //text field definiton
     TextView message;
-
+    //used to encrypt the passwords
     private static MessageDigest md;
 
     // Progress Dialog
     private ProgressDialog pDialog;
 
-    // Creating JSON Parser object
+    // Creating JSON Parser object to make JSON communications
     JSONParser jParser = new JSONParser();
-
+    //the link to the relevant php file in the web host
     private static String url_authenticate = "http://www.rnhlocator.site88.net/validate_user.php";
-
+    //the TAGs used commonly in the code
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_ID = "user_id";
     private static final String TAG_LOG = "myview";
@@ -53,7 +54,7 @@ public class LoginWindowActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_window);
 
-        //button definition
+        //button innitialization
         authenticate = (Button) findViewById(R.id.btnAuthenticate);
         signup = (Button) findViewById(R.id.btnCloudSignup);
         toStandaloneApp = (Button) findViewById(R.id.btnToSandalondeApp);
@@ -62,7 +63,7 @@ public class LoginWindowActivity extends Activity {
         password = (EditText) findViewById(R.id.password);
 
         message = (TextView) findViewById(R.id.error_message);
-
+        //on button click
         authenticate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +72,7 @@ public class LoginWindowActivity extends Activity {
                 new AuthenticateUser().execute();
             }
         });
-
+        //on button click
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,7 +80,7 @@ public class LoginWindowActivity extends Activity {
                 startActivity(signupwindow);
             }
         });
-
+        //on button click
         toStandaloneApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,17 +107,18 @@ public class LoginWindowActivity extends Activity {
             }
             return sb.toString();
         } catch (NoSuchAlgorithmException ex) {
+            Log.d(TAG_LOG, "error encrypting the password");
             // Logger.getLogger(CryptWithMD5.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
 
-    public void clear(){
-        // Toast toast = Toast.makeText(getApplicationContext(), "username or the password is incorrect", Toast.LENGTH_SHORT);
-        //  toast.show();
+    public void clear() {
+        Toast toast = Toast.makeText(getApplicationContext(), "username or the password is incorrect", Toast.LENGTH_SHORT);
+        toast.show();
         message.setText("username or the password is incorrect");
-        // username.setText("");
-        // password.setText("");
+        username.setText("");
+        password.setText("");
     }
 
     //this inner class is used to validate the user and log in to the account
@@ -125,6 +127,8 @@ public class LoginWindowActivity extends Activity {
         /**
          * Before starting background thread Show Progress Dialog
          */
+        int success;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -148,7 +152,7 @@ public class LoginWindowActivity extends Activity {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("user_name", name));
             params.add(new BasicNameValuePair("password", pwd));
-
+            //output to get understanding of the process
             Log.d(TAG_LOG, "user name and pwd " + name + "  " + pwd);
             // getting JSON string from URL
             JSONObject json = jParser.makeHttpRequest(url_authenticate, "POST", params);
@@ -158,21 +162,23 @@ public class LoginWindowActivity extends Activity {
 
             try {
                 // Checking for SUCCESS TAG
-                int success = json.getInt(TAG_SUCCESS);
-                String id=json.getString(TAG_ID);
+                success = json.getInt(TAG_SUCCESS);
 
                 if (success == 1) {
+
+                    String id = json.getString(TAG_ID);
                     //if user name and password are correct the window cloud access will be opened
                     Intent cloudWindow = new Intent(getApplicationContext(), CloudDatabaseActivity.class);
-                    cloudWindow.putExtra("id",id);
+                    cloudWindow.putExtra("id", id);
                     startActivity(cloudWindow);
-                   // finish();
+                    // finish();
 
-                } else {
+                } else if (success == 0) {
+                    //if the system fails to authenticate
                     Log.d(TAG_LOG, "error username or pwd");
-                    //clear();
                 }
             } catch (JSONException e) {
+                Log.d(TAG_LOG, "exception occured");
                 e.printStackTrace();
             }
 
@@ -186,6 +192,8 @@ public class LoginWindowActivity extends Activity {
         protected void onPostExecute(String file_url) {
             // dismiss the dialog once done
             pDialog.dismiss();
+            if (success == 0)
+                clear();
         }
 
     }

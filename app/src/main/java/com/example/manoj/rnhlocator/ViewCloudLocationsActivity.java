@@ -12,6 +12,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -85,11 +86,6 @@ public class ViewCloudLocationsActivity extends ListActivity {
                                     int position, long id) {
                 // getting values from selected ListItem
                 String lid = ((TextView) view.findViewById(R.id.lid)).getText().toString();
-                //String name = ((TextView) view.findViewById(R.id.name)).getText().toString();
-                // religion = ((TextView) view.findViewById(R.id.category)).getText().toString();
-                // String description = ((TextView) view.findViewById(R.id.description)).getText().toString();
-                //   String latitude = ((TextView) view.findViewById(R.id.latitude)).getText().toString();
-                //   String longitude = ((TextView) view.findViewById(R.id.longitude)).getText().toString();
 
                 // Starting new intent
                 Intent viewinmap = new Intent(getApplicationContext(), ViewCloudInMapActivity.class);
@@ -98,6 +94,7 @@ public class ViewCloudLocationsActivity extends ListActivity {
                 Log.d(TAG_LOG, "sent location_id is: " + lid);
                 // starting new activity and expecting some response back
                 startActivity(viewinmap);
+
             }
         });
 
@@ -111,6 +108,8 @@ public class ViewCloudLocationsActivity extends ListActivity {
         /**
          * Before starting background thread Show Progress Dialog
          */
+        int success;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -138,7 +137,7 @@ public class ViewCloudLocationsActivity extends ListActivity {
 
             try {
                 // Checking for SUCCESS TAG
-                int success = json.getInt(TAG_SUCCESS);
+                success = json.getInt(TAG_SUCCESS);
 
                 if (success == 1) {
                     // products found
@@ -174,14 +173,15 @@ public class ViewCloudLocationsActivity extends ListActivity {
                 } else {
                     // no products found
                     // Launch Add New product Activity
-                    Log.d(TAG_LOG, "no result found");
-                    Intent i = new Intent(getApplicationContext(), AddCloudLocationActivity.class);
+                    Log.d(TAG_LOG, "no location result found");
+                    Intent moveback = new Intent(getApplicationContext(), CloudDatabaseActivity.class);
                     // Closing all previous activities
-                    i.putExtra("id", user_id);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(i);
+                    moveback.putExtra("id", user_id);
+                    moveback.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(moveback);
                 }
             } catch (JSONException e) {
+                Log.d(TAG_LOG, "exception occur in viewcloudlocationActivity");
                 e.printStackTrace();
             }
             return null;
@@ -195,6 +195,10 @@ public class ViewCloudLocationsActivity extends ListActivity {
             // dismiss the dialog after getting all products
             pDialog.dismiss();
             // updating UI from Background Thread
+            if (success == 0) {
+                Toast toast = Toast.makeText(getApplicationContext(), "no location found", Toast.LENGTH_SHORT);
+                toast.show();
+            }
             runOnUiThread(new Runnable() {
                 public void run() {
                     /**

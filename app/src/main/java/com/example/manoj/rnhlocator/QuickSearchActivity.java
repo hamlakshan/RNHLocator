@@ -13,20 +13,43 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
+import static java.lang.Math.acos;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import static java.lang.Math.toRadians;
+
 
 public class QuickSearchActivity extends Activity {
     /*this activity locads the quick shrarch window which will show all the avialable places in the datadase
     * which are in 10KM readius to  the current location*/
 
     private GoogleMap googleMap;
-    double latitude, longitude;
-    String name, religion, description, id;
+    double latitude, longitude,my_latitude,my_longitude;
+    String name, category, description, id;
     DatabaseHandler db;
+    GPSTracker gps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quick_search_map);
+        gps = new GPSTracker(QuickSearchActivity.this);
+
+        // check if GPS enabled
+        if (gps.canGetLocation()) {
+
+            my_latitude = gps.getLatitude();
+            my_longitude = gps.getLongitude();
+
+            // \n is for new line
+            Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + my_latitude + "\nLong: " + my_longitude, Toast.LENGTH_LONG).show();
+
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
 
         db = new DatabaseHandler(this); //db handler class
 
@@ -63,19 +86,19 @@ public class QuickSearchActivity extends Activity {
         MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title(name);
 
         // Changing marker icon according to the religious place
-        if (religion == "Buddhist") {
+        if (category == "Buddhist") {
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.temple));
         }
-        if (religion == "Catholic") {
+        if (category == "Catholic") {
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.church));
         }
-        if (religion == "Islam") {
+        if (category == "Islam") {
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.mosque));
         }
-        if (religion == "Hindu") {
+        if (category == "Hindu") {
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.kovil));
         }
-        if (religion == "Other") {
+        if (category == "Other") {
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
         }
 // adding marker
@@ -89,9 +112,10 @@ public class QuickSearchActivity extends Activity {
 
             id = Integer.toString(ln.getId());
             name = ln.getName();
-            religion = ln.getCategory();
+            category = ln.getCategory();
             latitude = Double.parseDouble(ln.getLatitude());
             longitude = Double.parseDouble(ln.getLongitude());
+
 
             placeMarker();  //add the place marker each separate place
 
@@ -99,6 +123,21 @@ public class QuickSearchActivity extends Activity {
 
 
         }
+    }
+
+    public long getDistanceMeters(double lat1, double lng1) {
+
+        double l1 = toRadians(lat1);
+        double l2 = toRadians(my_latitude);
+        double g1 = toRadians(lng1);
+        double g2 = toRadians(my_longitude);
+
+        double dist = acos(sin(l1) * sin(l2) + cos(l1) * cos(l2) * cos(g1 - g2));
+        if (dist < 0) {
+            dist = dist + Math.PI;
+        }
+
+        return Math.round(dist * 6378100);
     }
 
 
