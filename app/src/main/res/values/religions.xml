@@ -5,6 +5,10 @@
         <item>Catholic</item>
         <item>Islam</item>
         <item>Hindu</item>
+        <item>Historical</item>
+        <item>Residence</item>
+        <item>Intitiute</item>
+        <item>Shop</item>
         <item>Otehr</item>
     </string-array>
 

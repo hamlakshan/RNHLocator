@@ -22,4 +22,6 @@
     <string name="title_activity_view_cloud_in_map">ViewCloudInMapActivity</string>
     <string name="title_activity_view_location_comments">ViewLocationCommentsActivity</string>
     <string name="title_activity_quick_cloud_map_search">QuickCloudMapSearchActivity</string>
+    <string name="title_activity_photo_upload">PhotoUploadActivity</string>
+    <string name="title_activity_view_loaction_photo">ViewLoactionPhoto</string>
 </resources>

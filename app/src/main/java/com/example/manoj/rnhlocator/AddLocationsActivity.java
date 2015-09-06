@@ -2,8 +2,10 @@ package com.example.manoj.rnhlocator;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -34,13 +36,15 @@ public class AddLocationsActivity extends Activity {
     DatabaseHandler db;
     private GoogleMap googleMap;
 
+    private static final String TAG_LOG = "myview";
+
     GPSTracker gps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_locations);
+        setContentView(R.layout.add_locations_window);
         addSpinner();
 
         addnew = (Button) findViewById(R.id.btnadd);        //this button is used to add the new location
@@ -57,10 +61,9 @@ public class AddLocationsActivity extends Activity {
         addnew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG_LOG, "add button pressed");
+                showAlert(AddLocationsActivity.this);    //opens the alert window
 
-                if (name.getText() != null && latitude.getText() != null && longitude.getText() != null) {
-                    addData();  //call the methd to add data to the database
-                }
             }
         });
         //when user paress the generate Codinates button
@@ -160,6 +163,7 @@ public class AddLocationsActivity extends Activity {
         if (googleMap == null) {
             googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
             // check if map is created successfully or not
+            googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
             googleMap.setMyLocationEnabled(true); // false to disable  shows my current location on the map
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(6.7903917f, 79.9005859f), 14.0f));
 
@@ -184,8 +188,8 @@ public class AddLocationsActivity extends Activity {
     }
 
     //this method is used to alert the user before entering the data to the database
-    public void showAlert() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getApplicationContext());
+    public void showAlert(Context context) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
         // Setting Dialog Title
         alertDialog.setTitle("Adding new data");
@@ -194,11 +198,16 @@ public class AddLocationsActivity extends Activity {
         alertDialog.setMessage("Are you sure you want to add new location");
 
         // Setting Icon to Dialog
-        //alertDialog.setIcon(R.drawable.delete);
+        alertDialog.setIcon(R.drawable.alert);
 
         // On pressing Settings button
         alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
+
+                if (name.getText() != null && latitude.getText() != null && longitude.getText() != null) {
+                    addData();  //call the methd to add data to the database
+                }
+
             }
         });
 
@@ -210,7 +219,11 @@ public class AddLocationsActivity extends Activity {
         });
 
         // Showing Alert Message
-        alertDialog.show();
+        Log.d(TAG_LOG, "im here");
+        // alertDialog.show();
+        AlertDialog alert11 = alertDialog.create();
+        alert11.show();
     }
+
 
 }

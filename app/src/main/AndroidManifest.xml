@@ -87,6 +87,18 @@
             android:name=".QuickCloudMapSearchActivity"
             android:label="@string/title_activity_quick_cloud_map_search" >
         </activity>
+        <activity
+            android:name=".DrawPathInGoogleMapActivity"
+            android:label="@string/title_activity_quick_cloud_map_search" >
+        </activity>
+        <activity
+            android:name=".PhotoUploadActivity"
+            android:label="@string/title_activity_photo_upload" >
+        </activity>
+        <activity
+            android:name=".ViewLoactionPhoto"
+            android:label="@string/title_activity_view_loaction_photo" >
+        </activity>
     </application>
 
 </manifest>

@@ -1,7 +1,10 @@
 package com.example.manoj.rnhlocator;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -27,7 +30,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-
+//this activity is used to add new location to the cloud location
+//this activity needs to connect to the cloud location when adding the location details to the database
 public class AddCloudLocationActivity extends Activity {
 
     // Progress Dialog
@@ -43,13 +47,15 @@ public class AddCloudLocationActivity extends Activity {
     Button markOnmap;
     Button exit;
     Button btnAddLocation;
+    Button addPhoto;
 
-    String user_id;
+    String user_id, image;
 
     EditText inputName;
     EditText inputDesc;
     EditText inputLatitude;
     EditText inputLongitude;
+
 
     GoogleMap googleMap;
 
@@ -65,7 +71,7 @@ public class AddCloudLocationActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_locations);
+        setContentView(R.layout.add_locations_window);
         addSpinner();
         Log.d(TAG_LOG, "on create finished");
 
@@ -85,15 +91,13 @@ public class AddCloudLocationActivity extends Activity {
         getCordinate = (Button) findViewById(R.id.btnGetLocation);  //this button id used to add the location codrinates ising GPS tracker
         markOnmap = (Button) findViewById(R.id.gotomap);    //this button is used to add the location codinates using by touching the map
         exit = (Button) findViewById(R.id.btnexit);
-
+        addPhoto = (Button) findViewById(R.id.btnTakeAPhoto);
         // button click event
         btnAddLocation.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                // creating new location in background thread
-                Log.d(TAG_LOG, "add button pressed");
-                new CreateNewLocation().execute();
+                showAlert(AddCloudLocationActivity.this);
             }
         });
 
@@ -141,6 +145,15 @@ public class AddCloudLocationActivity extends Activity {
 
             }
         });
+
+        //when this button pressed activty to upload a photo will be started
+        addPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent photoview = new Intent(getApplicationContext(), PhotoUploadActivity.class);
+                startActivityForResult(photoview, 1);
+            }
+        });
         //when exit button is pressed the current window will be closed
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,6 +161,54 @@ public class AddCloudLocationActivity extends Activity {
                 finish();
             }
         });
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                image = data.getStringExtra("filename");
+                Log.d(TAG_LOG, "imagei is:" + image);
+            }
+        }
+    }
+
+    //this method is used to alert the user before entering the data to the database
+    public void showAlert(Context context) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+
+        // Setting Dialog Title
+        alertDialog.setTitle("Adding new data");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("Are you sure you want to add new location");
+
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.drawable.alert);
+
+        // On pressing Settings button
+        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                // creating new location in background thread
+                Log.d(TAG_LOG, "add button pressed");
+                new CreateNewLocation().execute();
+
+            }
+        });
+
+        // on pressing cancel button
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        // Showing Alert Message
+        Log.d(TAG_LOG, "im here");
+        // alertDialog.show();
+        AlertDialog alert11 = alertDialog.create();
+        alert11.show();
     }
 
     //this method used to create the dropdown menu to select the religion
@@ -180,6 +241,7 @@ public class AddCloudLocationActivity extends Activity {
         if (googleMap == null) {
             googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
             // check if map is created successfully or not
+            googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
             googleMap.setMyLocationEnabled(true); // false to disable  shows my current location on the map
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(6.7903917f, 79.9005859f), 14.0f));
 
@@ -223,7 +285,7 @@ public class AddCloudLocationActivity extends Activity {
         }
 
         /**
-         * Creating product
+         * Creating location
          */
         protected String doInBackground(String... args) {
 
@@ -241,6 +303,7 @@ public class AddCloudLocationActivity extends Activity {
             params.add(new BasicNameValuePair("user_id", user_id));
             params.add(new BasicNameValuePair("latitude", latitude));
             params.add(new BasicNameValuePair("longitude", longitude));
+            params.add(new BasicNameValuePair("image", "uploads/" + image));
 
             // getting JSON Object
             // Note that create product url accepts POST method
@@ -255,8 +318,8 @@ public class AddCloudLocationActivity extends Activity {
 
                 if (success == 1) {
                     // successfully created product
-                    Intent i = new Intent(getApplicationContext(),CloudDatabaseActivity.class);
-                    i.putExtra("id",user_id);
+                    Intent i = new Intent(getApplicationContext(), CloudDatabaseActivity.class);
+                    i.putExtra("id", user_id);
                     startActivity(i);
 
                     // closing this screen

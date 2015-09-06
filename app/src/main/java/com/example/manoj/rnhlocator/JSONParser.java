@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -29,6 +31,7 @@ public class JSONParser {
     static InputStream is = null;
     static JSONObject jObj = null;
     static String json = "";
+    static String TAG_LOG = "myview";
 
     // constructor
     public JSONParser() {
@@ -75,8 +78,7 @@ public class JSONParser {
         }
 
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    is, "iso-8859-1"), 8);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
             StringBuilder sb = new StringBuilder();
             String line = null;
             while ((line = reader.readLine()) != null) {
@@ -92,6 +94,59 @@ public class JSONParser {
         try {
             jObj = new JSONObject(json);
         } catch (JSONException e) {
+            Log.e("JSON Parser", "Error parsing data " + e.toString());
+        }
+
+        // return JSON String
+        return jObj;
+
+    }
+
+    public JSONObject makeWayPointHttpRequest(String mapUrl) {
+
+        // Making HTTP request
+        HttpURLConnection urlConnection = null;
+
+        try {
+
+
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+
+            HttpGet httpGet = new HttpGet(mapUrl);
+
+            HttpResponse httpResponse = httpClient.execute(httpGet);
+            Log.d(TAG_LOG,"requesting baby");
+            HttpEntity httpEntity = httpResponse.getEntity();
+            is = httpEntity.getContent();
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            is.close();
+            json = sb.toString();
+            Log.d(TAG_LOG, "json:" + json);
+        } catch (Exception e) {
+            Log.d(TAG_LOG, "error bufferreader: " + e.toString());
+            Log.e("Buffer Error", "Error converting result " + e.toString());
+        }
+
+        // try parse the string to a JSON object
+        try {
+            jObj = new JSONObject(json);
+        } catch (JSONException e) {
+            Log.d(TAG_LOG, "error passing: " + e.toString());
             Log.e("JSON Parser", "Error parsing data " + e.toString());
         }
 

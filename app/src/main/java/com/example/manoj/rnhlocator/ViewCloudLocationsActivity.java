@@ -214,7 +214,5 @@ public class ViewCloudLocationsActivity extends ListActivity {
                 }
             });
         }
-
     }
-
 }
